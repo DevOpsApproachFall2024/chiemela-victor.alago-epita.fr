@@ -15,7 +15,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: name: Build and push the Docker image
+      - name: Build and push the Docker image
         uses: docker/build-push-action@v6
         with:
           push: true
@@ -59,3 +59,5 @@ jobs:
   #       run: |
   #         ls ${{ github.workspace }}
   #     - run: echo "🍏 This job's status is ${{ job.status }}."
+
+  #New to test the workflow
