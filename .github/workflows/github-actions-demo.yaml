@@ -2,7 +2,7 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
-# Add the following code to the file to build and push the Docker image to Docker Hub:
+  # Add the following code to the file to build and push the Docker image to Docker Hub:
   docker:
     runs-on: self-hosted
     steps:
@@ -21,7 +21,7 @@ jobs:
           push: true
           tags: user/app:latest
 
- #Add the following code to the file to build and push the Docker image to GitHub Container Registry: 
+  # Add the following code to the file to build and push the Docker image to GitHub Container Registry:
   git-registry:
     runs-on: self-hosted
     steps:
@@ -36,11 +36,9 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build Inventory Image
-          run: |
-            docker build . --tag ghcr.io/DevOpsApproachFall2024/app:latest
-            docker push ghcr.io/DevOpsApproachFall2024/app:latest
-
-
+        run: |
+          docker build . --tag ghcr.io/DevOpsApproachFall2024/app:latest
+          docker push ghcr.io/DevOpsApproachFall2024/app:latest
 
 
 
