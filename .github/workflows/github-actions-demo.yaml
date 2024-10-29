@@ -1,7 +1,49 @@
 name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
+permissions:
+  contents: read
+  packages: write
 jobs:
+  # Add the following code to the file to build and push the Docker image to GitHub Container Registry:
+  git-registry:
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: List files in root
+        run: ls -al
+
+      - name: List files in nextjs-blog directory
+        run: ls -al ./nextjs-blog
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Log in to GitHub Container Registry
+        uses: docker/login-action@v2
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set lowercase repository owner
+        run: echo "REPO_OWNER_LC=${GITHUB_REPOSITORY_OWNER,,}" >> $GITHUB_ENV
+
+      - name: Build and push Docker image to GHCR
+        uses: docker/build-push-action@v3
+        with:
+          context: ./nextjs-blog
+          file: ./nextjs-blog/Dockerfile
+          push: true
+          tags: ghcr.io/${{ env.REPO_OWNER_LC }}/app:latest
+
+
+
+
+
+
   # Add the following code to the file to build and push the Docker image to Docker Hub:
   # docker:
   #   runs-on: self-hosted
@@ -20,48 +62,3 @@ jobs:
   #       with:
   #         push: true
   #         tags: user/app:latest
-
-  # Add the following code to the file to build and push the Docker image to GitHub Container Registry:
-  git-registry:
-    runs-on: self-hosted
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      - name: Log in to GitHub Container Registry
-        uses: docker/login-action@v2
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Build and push Docker image to GHCR
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          push: true
-          tags: ghcr.io/devopsapproachfall2024/app:latest
-
-
-
-  # Explore-GitHub-Actions:
-  #   runs-on: self-hosted
-  #   steps:
-  #     - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-  #     - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-  #     - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-  #     - name: Check out repository code
-  #       uses: actions/checkout@v4
-  #     - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-  #     - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-  #     - name: List files in the repository
-  #       run: |
-  #         ls ${{ github.workspace }}
-  #     - run: echo "🍏 This job's status is ${{ job.status }}."
-
-  # test-workflow-1:
-  # test-workflow-2:
-  # test-workflow-3:
