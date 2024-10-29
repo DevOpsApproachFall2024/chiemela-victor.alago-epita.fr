@@ -35,7 +35,7 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: 'Build Inventory Image'
+      - name: Build Inventory Image
                   run: |
                     docker build . --tag ghcr.io/DevOpsApproachFall2024/app:latest
                     docker push ghcr.io/DevOpsApproachFall2024/app:latest
@@ -60,4 +60,5 @@ jobs:
   #         ls ${{ github.workspace }}
   #     - run: echo "🍏 This job's status is ${{ job.status }}."
 
-  #New to test the workflow
+  #New to test the workflow 1
+  # test-workflow-2:
