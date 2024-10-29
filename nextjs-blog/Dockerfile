@@ -1,6 +1,6 @@
 # Use the official Node.js LTS image as the base
 FROM node:22
-LABEL org.opencontainers.image.source="https://github.com/DevOpsApproachFall2024/chiemela-victor.alago-epita.fr"
+LABEL org.opencontainers.image.source="https://github.com/devopsapproachfall2024/chiemela-victor.alago-epita.fr"
 
 # Set the working directory inside the container
 WORKDIR /app
