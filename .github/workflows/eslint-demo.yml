@@ -1,0 +1,52 @@
+name: Demo to Show How to Use ESLint in a Nextjs Project
+
+on: [pull_request]
+
+jobs:
+  next_test:
+    permissions:
+      contents: read
+      packages: read
+      pull-requests: read
+      checks: write
+
+    runs-on: self-hosted
+
+    steps:
+      # Step to checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step to set up Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+          
+      # Step to install dependencies within the nextjs-blog directory
+      - name: Install Node Dependencies
+        run: npm ci
+        working-directory: ./nextjs-blog
+        env:
+          CI: TRUE
+
+      # Step to run ESLint and check code linting in the nextjs-blog directory
+      - name: Test Code Linting
+        run: npm run lint
+        working-directory: ./nextjs-blog
+
+      # Step to save ESLint report in JSON format in the nextjs-blog directory
+      - name: Save Code Linting Report JSON
+        run: npm run lint:report
+        working-directory: ./nextjs-blog
+        continue-on-error: true
+
+      # Optional: Annotate ESLint results in GitHub PR
+      - name: Annotate Code Linting Results
+        uses: ataylorme/eslint-annotate-action@v3
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          report-json: "./nextjs-blog/eslint_report.json"
+
+ 
